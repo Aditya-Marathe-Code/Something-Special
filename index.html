@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Shalaka ✨</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit',sans-serif;}
+
+body{
+height:100vh;
+overflow:hidden;
+background:#050510;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-2;
+}
+
+/* ===== PREMIUM GLASS ===== */
+.glass{
+background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02));
+border:1px solid rgba(255,255,255,0.15);
+backdrop-filter:blur(40px) saturate(150%);
+-webkit-backdrop-filter:blur(40px) saturate(150%);
+border-radius:25px;
+padding:35px;
+width:90%;
+max-width:420px;
+box-shadow:
+0 0 40px rgba(255,255,255,0.05),
+inset 0 0 30px rgba(255,255,255,0.05);
+animation:fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(20px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+input{
+width:100%;
+padding:12px;
+margin-top:15px;
+border:none;
+border-radius:15px;
+background:rgba(255,255,255,0.1);
+color:white;
+outline:none;
+}
+
+/* ===== NEUTRAL BUTTONS ===== */
+button{
+margin-top:15px;
+padding:12px 25px;
+border-radius:25px;
+border:1px solid rgba(255,255,255,0.25);
+background:linear-gradient(145deg,#2c2c34,#1a1a22);
+color:#e0e0e0;
+cursor:pointer;
+transition:0.35s ease;
+font-weight:500;
+letter-spacing:0.5px;
+}
+
+button:hover{
+transform:translateY(-3px);
+background:linear-gradient(145deg,#3a3a45,#24242d);
+box-shadow:0 8px 20px rgba(0,0,0,0.5);
+}
+
+button:disabled{
+opacity:0.4;
+cursor:not-allowed;
+}
+
+.hidden{display:none;}
+
+.options{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.messageBox{
+margin-top:20px;
+height:200px;
+overflow-y:auto;
+font-size:14px;
+line-height:1.6;
+}
+
+/* ===== BIRTHDAY ===== */
+.birthday-text{
+font-size:30px;
+font-weight:700;
+text-align:center;
+background:linear-gradient(90deg,#ffffff,#bbbbbb);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:glow 3s infinite alternate;
+}
+
+@keyframes glow{
+from{text-shadow:0 0 15px rgba(255,255,255,0.3);}
+to{text-shadow:0 0 30px rgba(255,255,255,0.6);}
+}
+
+.birthday-img{
+width:200px;
+border-radius:25px;
+margin-top:25px;
+box-shadow:0 0 40px rgba(255,255,255,0.4);
+}
+
+@media(max-width:480px){
+.glass{padding:25px;}
+.birthday-text{font-size:22px;}
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="universe"></canvas>
+<audio id="music" src="music.mp3" loop></audio>
+
+<div id="landing" class="glass">
+<h2>This Is Something Very Special</h2>
+<h3 id="timer"></h3>
+<input type="password" id="password" placeholder="Enter password">
+<button onclick="checkPassword()">Enter</button>
+</div>
+
+<div id="story" class="glass hidden">
+<h2>Choose a Chapter</h2>
+<div class="options">
+<button id="b1" onclick="showMessage(1)">Bumble</button>
+<button id="b2" disabled onclick="showMessage(2)">Instagram</button>
+<button id="b3" disabled onclick="showMessage(3)">Meetup</button>
+</div>
+<div class="messageBox" id="messageBox"></div>
+</div>
+
+<div id="birthday" class="glass hidden">
+<div class="birthday-text">
+Happy Birthday To The Prettiest Girl! <br>
+<br> From yours only <br> Adi Marathe (Yeda)
+<div class="image-wrapper">
+    <img src="shalaka.jpeg" class="photo">
+</div>
+
+<script>
+
+/* ===== MUSIC ===== */
+document.addEventListener("click",()=>{
+document.getElementById("music").play();
+},{once:true});
+
+/* ===== COUNTDOWN ===== */
+const birthdayDate=new Date("March 29, 2026 00:00:00").getTime();
+setInterval(()=>{
+const now=new Date().getTime();
+const diff=birthdayDate-now;
+const d=Math.floor(diff/(1000*60*60*24));
+const h=Math.floor((diff/(1000*60*60))%24);
+const m=Math.floor((diff/1000/60)%60);
+const s=Math.floor((diff/1000)%60);
+document.getElementById("timer").innerHTML=`${d}d ${h}h ${m}m ${s}s`;
+},1000);
+
+/* ===== AUTO BIRTHDAY ===== */
+const today=new Date();
+if(today.getMonth()===2 && today.getDate()===29){goBirthday();}
+
+/* ===== PASSWORD ===== */
+function checkPassword(){
+let val=document.getElementById("password").value;
+if(val==="bumble"){
+landing.classList.add("hidden");
+story.classList.remove("hidden");
+setTimeout(()=>b2.disabled=false,15000);
+setTimeout(()=>b3.disabled=false,30000);
+}
+else if(val==="Aditya"){goBirthday();}
+else{alert("Wrong password");}
+}
+
+/* ===== STORY TEXT ===== */
+function showMessage(num){
+let box=document.getElementById("messageBox");
+
+if(num===1){
+box.innerText = `Hey Bumble match,
+
+It was just another normal evening. Phone in hand. Mind somewhere between tired and relaxed. Scrolling without thinking too much. Profiles came and went.
+
+Then yours showed up.
+
+You’re beautiful — that’s obvious. But what made me stop wasn’t just that. It was how you carried yourself. Simple pictures. No unnecessary noise. Confident, but calm. Effortless. Real.
+
+I don’t usually pause for long.
+
+But I did.
+
+We matched.
+
+The conversation started normally — basic introductions, a little teasing, small jokes. Nothing dramatic. But somehow it didn’t feel forced. It flowed. One conversation turned into many. Late replies became instant ones. Random updates about the day started feeling important. We laughed more than expected.
+
+Getting your Instagram took some effort. I won’t lie.
+
+But I don’t put effort where I don’t see value.
+
+And then…
+
+We both disappeared.
+
+No fight. No explanation. Just silence.
+
+Time passed. Work. Routine. Life. Everything moved the way it does. I didn’t chase it. I didn’t question it.
+
+Then somehow, we reconnected.
+
+Same energy. Same comfort. Like the pause was just a comma, not a full stop.
+
+This time the conversations were different. A little deeper. Less pretending. More real.
+
+Eventually, we decided to meet.
+
+I wasn’t nervous. Just curious.
+
+Curious if the vibe would survive outside the screen.
+
+When I saw you walking toward me, smiling the same way…
+
+It felt steady. Certain.
+
+This wasn’t just another match.
+
+It was becoming something more.
+
+And that’s when everything shifted —
+not on Bumble…
+
+but somewhere else.`;
+}
+
+if(num===2){
+box.innerText = `And that “somewhere else” became Instagram.
+
+Story replies turned into long chats. Cute voice notes. Flirty replies. Random crazy reels at 1 AM that only we found funny. It was light — but it was real.
+
+Some conversations were stupid. Some went unexpectedly deep.
+
+You started sending updates without being asked. I started waiting for them without admitting it.
+
+Your voice notes felt different. Comfortable. Familiar.
+
+Somewhere between a late-night reel and a “reach home safe” text, the energy changed.
+
+We weren’t just two people talking anymore.
+
+We were choosing to talk.
+
+And that’s a difference.
+
+The teasing became softer. The silences became easier. The flirting became less about impressing and more about understanding.
+
+And somewhere between a voice note and a shared reel…
+
+we both knew —
+
+this needed to move beyond the screen.
+
+So we planned it.
+
+A simple meet.
+
+Nothing dramatic.
+
+But we both knew it wasn’t just “simple.”
+
+And when that day came…
+
+I realized something.
+
+The screen had been hiding a lot.`;
+}
+
+if(num===3){
+box.innerText = `And then we finally met.
+
+First thing — your pictures don’t do you justice. Not even close. You’re way prettier in real life. I’m not saying that to impress you. It genuinely caught me off guard for a second.
+
+We’ve spoken on calls for hours before. Deep conversations where you just listened patiently.
+
+I’m not the calmest person — you know that. Short-tempered. Sometimes I use foul language while telling a story.
+
+But the way you’d softly cut me off and make me rephrase it?
+
+No one’s ever done that.
+
+And the funny part?
+
+I actually listened.
+
+I still laugh thinking about your reaction when you remembered we weren’t just “random followers.” We met on Bumble. The way your expression changed — priceless.
+
+The bike ride felt different that night.
+
+Your nonstop talking. The way you explain things with so much detail. It was peaceful and exciting at the same time.
+
+I didn’t even think of it as a date.
+
+I genuinely wanted to know your story.
+
+And after hearing parts of it, I just thought…
+
+Damn.
+
+She’s actually a really good person.
+
+Your photo gallery is a roller coaster — cute pictures, random aesthetics, and those socks. I was convinced you’re a little crazy.
+
+In the best way.
+
+And when you casually said you want four kids?
+
+I was shocked.
+
+But somehow, I could picture you being the best mom.
+
+I honestly didn’t want that night to end.
+
+And yeah…
+
+I missed something.
+
+Not just a kiss — though yes, that too.
+
+I wanted to look into your eyes properly. The way they shine in photos… I forgot to pause and really see them up close.
+
+I was too busy listening to you.
+
+And this time…
+
+I don’t want to miss anything.
+
+I don’t want to rush this. I don’t want to put pressure on you.
+
+But I’d genuinely like to take you out properly.
+
+Maybe we start dating. Slowly.
+
+No forcing. No expectations.
+
+Just two people who found each other twice…
+
+and don’t want to lose that chance a third time.`;
+}
+
+}
+
+/* ===== BIRTHDAY MODE WITH FIREWORKS ===== */
+function goBirthday(){
+landing.classList.add("hidden");
+story.classList.add("hidden");
+birthday.classList.remove("hidden");
+
+setInterval(createFirework,800);
+}
+
+/* ===== FIREWORK EFFECT ===== */
+function createFirework(){
+const canvas=document.getElementById("universe");
+const ctx=canvas.getContext("2d");
+
+let particles=[];
+let x=Math.random()*canvas.width;
+let y=Math.random()*canvas.height/2;
+
+for(let i=0;i<40;i++){
+particles.push({
+x:x,
+y:y,
+angle:Math.random()*2*Math.PI,
+speed:Math.random()*3+2,
+life:100
+});
+}
+
+function explode(){
+ctx.fillStyle="rgba(5,5,16,0.2)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+particles.forEach(p=>{
+p.x+=Math.cos(p.angle)*p.speed;
+p.y+=Math.sin(p.angle)*p.speed;
+p.life--;
+
+ctx.beginPath();
+ctx.arc(p.x,p.y,2,0,Math.PI*2);
+ctx.fillStyle="hsl("+Math.random()*360+",100%,70%)";
+ctx.fill();
+});
+
+particles=particles.filter(p=>p.life>0);
+
+if(particles.length>0){
+requestAnimationFrame(explode);
+}
+}
+
+explode();
+}
+
+/* ===== PREMIUM SLOW STARFIELD ===== */
+const canvas=document.getElementById("universe");
+const ctx=canvas.getContext("2d");
+
+function resizeCanvas(){
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize",resizeCanvas);
+
+let stars=[];
+const STAR_COUNT=900;
+const SPEED=0.12;
+
+for(let i=0;i<STAR_COUNT;i++){
+stars.push({
+x:(Math.random()-0.5)*canvas.width,
+y:(Math.random()-0.5)*canvas.height,
+z:Math.random()*canvas.width
+});
+}
+
+function animate(){
+ctx.fillStyle="rgba(5,5,16,0.4)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+const centerX=canvas.width/2;
+const centerY=canvas.height/2;
+
+for(let i=0;i<stars.length;i++){
+let star=stars[i];
+star.z-=SPEED;
+
+if(star.z<=0){
+star.x=(Math.random()-0.5)*canvas.width;
+star.y=(Math.random()-0.5)*canvas.height;
+star.z=canvas.width;
+}
+
+let k=128/star.z;
+let px=star.x*k+centerX;
+let py=star.y*k+centerY;
+let size=(1-star.z/canvas.width)*2;
+
+ctx.beginPath();
+ctx.fillStyle="white";
+ctx.arc(px,py,size,0,Math.PI*2);
+ctx.fill();
+}
+
+requestAnimationFrame(animate);
+}
+animate();
+
+</script>
+</body>
+</html>
